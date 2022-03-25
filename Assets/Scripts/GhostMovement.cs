@@ -6,14 +6,6 @@ using UnityEditor;
 [RequireComponent(typeof(Rigidbody))]
 public class GhostMovement : MonoBehaviour
 {
-    private static GhostMovement _instance;
-    public static GhostMovement Instance
-    {
-        get
-        {
-            return _instance;
-        }
-    }
     [Tooltip("Controls")]
     private PlayerControls controls;
 
@@ -34,7 +26,6 @@ public class GhostMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _instance = this;
         controls = new PlayerControls();
         player = GetComponent<Rigidbody>();
         controls.Movement.Movement.performed += ctx => dir = ctx.ReadValue<Vector2>();

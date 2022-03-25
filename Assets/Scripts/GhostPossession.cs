@@ -19,8 +19,6 @@ public class GhostPossession : MonoBehaviour
 
     private void Possess(CallbackContext ctx)
     {
-        if (!gameObject.scene.IsValid())
-            return;
         Collider[] col = Physics.OverlapSphere(transform.position, possessRadius, possessableLayer);
         float distance = float.MaxValue;
         GameObject possess = null;
