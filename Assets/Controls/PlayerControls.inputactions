@@ -72,6 +72,34 @@
                     "isPartOfComposite": true
                 }
             ]
+        },
+        {
+            "name": "Possession",
+            "id": "9d3eae86-a385-47bc-970e-8a343b9db6c6",
+            "actions": [
+                {
+                    "name": "Possess",
+                    "type": "Button",
+                    "id": "24ebb2ec-4637-4ad1-bb77-00e08bf123e5",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "200e49cc-8c75-4af2-90b3-f804e22f1bc1",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Possess",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []
