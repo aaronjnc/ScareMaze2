@@ -9,15 +9,19 @@ public class PersonMover : MonoBehaviour
 
     public Transform person;
 
-    public LayerMask groundMask, personMask;
-
     public Rigidbody rb;
 
     //Objective
     public Vector3 objectivePosition;
-    private bool objectiveSet;
+    public bool objectiveSet;
+    public bool finalLocation;
     public PersonObjective objective;
-    private bool objectiveGot;
+    public GameObject pickedUpObjective;
+
+    public List<PersonObjective> beenTo;
+
+    //Escape
+    public bool escaped;
 
 
     //Scared
@@ -33,22 +37,33 @@ public class PersonMover : MonoBehaviour
     private void Update()
     {
         rb.position = gameObject.transform.position;
-        if(person.position == objectivePosition)
+        if(comparePosition(person.position, objectivePosition) && finalLocation)
         {
+            Debug.Log("Final Location");
+            beenTo.Add(objective);
+            objectiveSet = false;
+            objective = null;
+            pickedUpObjective = null;
+        }
+        else if(comparePosition(person.position, objectivePosition) && objective.getPickedUp() && pickedUpObjective == null)
+        {
+            Debug.Log("Objective Picked up By Someone Else");
             objectiveSet = false;
         }
-        if(objectiveSet && objective.getPickedUp() && !objectiveGot)
-        {
-            //
-        }
-        if(objectiveSet)
+        else if(objectiveSet)
         {
             GoToObjective();
         }
     }
 
-    public void setObjective(PersonObjective objective, bool startPosition)
+    public void setEscaped(bool escaped)
     {
+        this.escaped = escaped;
+    }
+
+    public void setObjective(PersonObjective objective, bool startPosition, bool finalLocation)
+    {
+        this.finalLocation = finalLocation;
         this.objective = objective;
         if (startPosition)
         {
@@ -56,14 +71,10 @@ public class PersonMover : MonoBehaviour
         }
         else
         {
+            this.finalLocation = true;
             this.objectivePosition = objective.getFinishPosition();
         }
         objectiveSet = true;
-    }
-
-    public void setGroundMask(LayerMask groundMask)
-    {
-        this.groundMask = groundMask;
     }
 
     private void GoToObjective()
@@ -71,8 +82,33 @@ public class PersonMover : MonoBehaviour
         agent.SetDestination(objectivePosition);
     }
 
-    public bool getObjectiveGot()
+    public bool getObjectiveSet()
     {
-        return this.objectiveGot;
+        return this.objectiveSet;
+    }
+
+    public PersonObjective getObjective()
+    {
+        return this.objective;
+    }
+
+    public void setPickedUpObjective(GameObject objective)
+    {
+        pickedUpObjective = objective;
+    }
+
+    public List<PersonObjective> getBeenTo()
+    {
+        return beenTo;
+    }
+
+    public bool getEscaped()
+    {
+        return this.escaped;
+    }
+
+    private bool comparePosition(Vector3 firstPosition, Vector3 secondPosition)
+    {
+        return (firstPosition.x == secondPosition.x) && (firstPosition.z == secondPosition.z);
     }
 }
