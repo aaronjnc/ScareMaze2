@@ -7,6 +7,8 @@ public class LevelManager : MonoBehaviour
     public List<PersonObjective> personObjectives;
     public List<PersonMover> persons;
 
+    public bool doorUnlocked;
+    public PersonObjective doorLocation;
     public PersonObjective finalObjective;
     // Start is called before the first frame update
     void Start()
@@ -17,7 +19,7 @@ public class LevelManager : MonoBehaviour
             int randomIndex = rnd.Next(personObjectives.Count);
             PersonObjective objective = personObjectives[randomIndex];
             Debug.Log(randomIndex);
-            person.setObjective(objective, true, !objective.getSecondaryObjective());
+            person.setObjective(objective, true, !objective.getIsKey());
         }
     }
 
@@ -26,7 +28,7 @@ public class LevelManager : MonoBehaviour
     {
         if (persons.Count == 0)
         {
-            Debug.Log("Lose");
+            Lose();
         }
         else
         {
@@ -47,28 +49,36 @@ public class LevelManager : MonoBehaviour
 
             foreach (PersonMover person in persons)
             {
-                if (person.getBeenTo().Count != personObjectives.Count && !person.getObjectiveSet())
+                if(!person.getEscaped())
                 {
-                    Debug.Log("Reassigning Task");
-                    System.Random rnd = new System.Random();
-                    PersonObjective objective;
-                    do
+                    if ((doorUnlocked && person.getBeenTo().Contains(doorLocation)))
                     {
-                        int randomIndex = rnd.Next(personObjectives.Count);
-                        objective = personObjectives[randomIndex];
-                    } while (person.getBeenTo().Contains(objective));
-                    person.setObjective(objective, true, !objective.getSecondaryObjective());
+                        person.setObjective(finalObjective, true, true);
+                    }
+                    else if (person.getBeenTo().Count != personObjectives.Count && !person.getObjectiveSet())
+                    {
+                        Debug.Log("Reassigning Task");
+                        System.Random rnd = new System.Random();
+                        PersonObjective objective;
+                        do
+                        {
+                            int randomIndex = rnd.Next(personObjectives.Count);
+                            objective = personObjectives[randomIndex];
+                        } while (person.getBeenTo().Contains(objective));
+                        person.setObjective(objective, true, !objective.getIsKey());
+                    }
                 }
-                else if (person.getBeenTo().Count == personObjectives.Count && !person.getObjectiveSet())
-                {
-                    person.setObjective(finalObjective, true, true);
-                }
-                else if (person.getEscaped())
+                else
                 {
                     persons.Remove(person);
                     Destroy(person.gameObject);
                 }
             }
         }
+    }
+
+    private void Lose()
+    {
+        Debug.Log("Lose");
     }
 }

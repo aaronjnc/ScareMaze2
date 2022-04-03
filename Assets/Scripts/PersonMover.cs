@@ -15,6 +15,9 @@ public class PersonMover : MonoBehaviour
     public Vector3 objectivePosition;
     public bool objectiveSet;
     public bool finalLocation;
+
+    public Vector3 doorLocation;
+
     public PersonObjective objective;
     public GameObject pickedUpObjective;
 
@@ -64,17 +67,17 @@ public class PersonMover : MonoBehaviour
     public void setObjective(PersonObjective objective, bool startPosition, bool finalLocation)
     {
         this.finalLocation = finalLocation;
-        this.objective = objective;
         if (startPosition)
         {
             this.objectivePosition = objective.getStartPosition();
+            this.objective = objective;
+            objectiveSet = true;
         }
         else
         {
-            this.finalLocation = true;
-            this.objectivePosition = objective.getFinishPosition();
+            this.doorLocation = objective.getFinishPosition();
+            objectiveSet = false;
         }
-        objectiveSet = true;
     }
 
     private void GoToObjective()
@@ -97,6 +100,11 @@ public class PersonMover : MonoBehaviour
         pickedUpObjective = objective;
     }
 
+    public GameObject getPickedUpObjective()
+    {
+        return this.pickedUpObjective;
+    }
+
     public List<PersonObjective> getBeenTo()
     {
         return beenTo;
@@ -110,5 +118,15 @@ public class PersonMover : MonoBehaviour
     private bool comparePosition(Vector3 firstPosition, Vector3 secondPosition)
     {
         return (firstPosition.x == secondPosition.x) && (firstPosition.z == secondPosition.z);
+    }
+
+    private void Scare()
+    {
+        this.isScared = true;
+        if(pickedUpObjective != null)
+        {
+            pickedUpObjective.SetActive(true);
+            pickedUpObjective.GetComponent<PersonObjective>().Drop(this.gameObject.transform.position);
+        }
     }
 }

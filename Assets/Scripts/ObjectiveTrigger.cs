@@ -14,7 +14,7 @@ public class ObjectiveTrigger : MonoBehaviour
         {
             if(!finalObjective)
             {
-                parent.setPickedUp(other.gameObject);
+                parent.setPickedUp(true, other.gameObject);
             }
             else
             {

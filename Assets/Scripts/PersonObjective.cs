@@ -5,7 +5,7 @@ using UnityEngine;
 public class PersonObjective : MonoBehaviour
 {
     public Vector3 objectStartPosition;
-    public bool secondaryObjective;
+    public bool isKey;
     public GameObject secondPosition;
     public Vector3 objectFinishPosition;
 
@@ -20,7 +20,7 @@ public class PersonObjective : MonoBehaviour
     private void Awake()
     {
         objectStartPosition = gameObject.transform.position;
-        if(secondaryObjective)
+        if(isKey)
         {
             objectFinishPosition = secondPosition.transform.position;
         }
@@ -50,26 +50,44 @@ public class PersonObjective : MonoBehaviour
         return this.pickedUp;
     }
 
-    public bool getSecondaryObjective()
+    public bool getIsKey()
     {
-        return secondaryObjective;
+        return isKey;
     }
 
-    public void setPickedUp(GameObject pickedUpBy)
-    { 
-        pickedUp = true;
-        owner = pickedUpBy.GetComponent<PersonMover>();
-        if(secondaryObjective)
+    public void setPickedUp(bool pickedUp, GameObject pickedUpBy = null)
+    {
+        this.pickedUp = pickedUp;
+        if (isKey)
         {
+            owner = pickedUpBy.GetComponent<PersonMover>();
             Debug.Log("Assigning new position");
             owner.setObjective(this, false, true);
+            owner.setPickedUpObjective(gameObject);
+            this.gameObject.SetActive(false);
         }
-        owner.setPickedUpObjective(gameObject);
     }
 
     public void setEscaped(GameObject escapee, bool escaped)
     {
         owner = escapee.GetComponent<PersonMover>();
         owner.setEscaped(escaped);
+    }
+
+    public void Drop(Vector3 where)
+    {
+        this.pickedUp = false;
+        this.gameObject.transform.position = where;
+        StartCoroutine(DropTimer());
+    }
+
+    IEnumerator DropTimer()
+    {
+        yield return new WaitForSeconds(despawnTime);
+
+        if(!pickedUp)
+        {
+            this.gameObject.transform.position = objectStartPosition;
+        }
     }
 }
