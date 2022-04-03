@@ -6,6 +6,7 @@ public class PersonObjective : MonoBehaviour
 {
     public Vector3 objectStartPosition;
     public bool secondaryObjective;
+    public GameObject secondPosition;
     public Vector3 objectFinishPosition;
 
     public LayerMask personMask;
@@ -19,6 +20,10 @@ public class PersonObjective : MonoBehaviour
     private void Awake()
     {
         objectStartPosition = gameObject.transform.position;
+        if(secondaryObjective)
+        {
+            objectFinishPosition = secondPosition.transform.position;
+        }
     }
 
     private void Update()
@@ -45,16 +50,26 @@ public class PersonObjective : MonoBehaviour
         return this.pickedUp;
     }
 
+    public bool getSecondaryObjective()
+    {
+        return secondaryObjective;
+    }
+
     public void setPickedUp(GameObject pickedUpBy)
     { 
-        Debug.Log("Person");
         pickedUp = true;
         owner = pickedUpBy.GetComponent<PersonMover>();
-        Debug.Log(owner);
         if(secondaryObjective)
         {
-            owner.setObjective(this, false);
+            Debug.Log("Assigning new position");
+            owner.setObjective(this, false, true);
         }
-        
+        owner.setPickedUpObjective(gameObject);
+    }
+
+    public void setEscaped(GameObject escapee, bool escaped)
+    {
+        owner = escapee.GetComponent<PersonMover>();
+        owner.setEscaped(escaped);
     }
 }
