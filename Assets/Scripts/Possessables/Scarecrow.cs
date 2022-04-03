@@ -5,16 +5,19 @@ using static UnityEngine.InputSystem.InputAction;
 
 public class Scarecrow : Possessable
 {
+    private Animator animator;
     private GhostMovement movement;
     void Start()
     {
         base.Start();
         movement = GetComponent<GhostMovement>();
+        animator = GetComponent<Animator>();
     }
     public override void Possess()
     {
         possessed = true;
         movement.enabled = true;
+        animator.SetBool("isPossessed", true);
     }
 
     protected override void Scare(CallbackContext ctx)
@@ -28,6 +31,7 @@ public class Scarecrow : Possessable
             ghost.transform.position = new Vector3(newPos.x, ghost.transform.position.y, newPos.z);
             ghost.SetActive(true);
             possessed = false;
+            animator.SetBool("isPossessed", false);
             StartCoroutine(PossessCooldown(ghost));
         }
     }
