@@ -12,7 +12,21 @@ public class PersonSight : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(transform.position, other.transform.position - transform.position, out hit, 100, player))
         {
+            Debug.Log("sighted");
             sighted = true;
         }
+    }
+    private void OnTriggerStay(Collider other)
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, other.transform.position - transform.position, out hit, 100, player))
+        {
+            sighted = true;
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        Debug.Log("he gone");
+        sighted = false;
     }
 }
