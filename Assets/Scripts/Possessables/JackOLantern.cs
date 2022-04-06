@@ -25,7 +25,12 @@ public class JackOLantern : Possessable
             ghost.transform.position = new Vector3(newPos.x, ghost.transform.position.y, newPos.z);
             ghost.SetActive(true);
             possessed = false;
+            Collider[] colliders = Physics.OverlapSphere(transform.position, 15);
             StartCoroutine(PossessCooldown(ghost));
         }
+    }
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(transform.position, 15);
     }
 }
