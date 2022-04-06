@@ -6,12 +6,20 @@ public class ObjectiveTrigger : MonoBehaviour
 {
     public PersonObjective parent;
     public LayerMask personLayer;
+    public bool finalObjective;
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.tag == "Person")
+        if(other.gameObject.tag == "Person" && other.gameObject.GetComponent<PersonMover>().getObjective() == GetComponent<PersonObjective>())
         {
-            parent.setPickedUp(other.gameObject);
+            if(!finalObjective)
+            {
+                parent.setPickedUp(true, other.gameObject);
+            }
+            else
+            {
+                parent.setEscaped(other.gameObject, finalObjective);
+            }
         }
     }
 }

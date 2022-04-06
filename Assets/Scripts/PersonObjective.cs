@@ -5,7 +5,8 @@ using UnityEngine;
 public class PersonObjective : MonoBehaviour
 {
     public Vector3 objectStartPosition;
-    public bool secondaryObjective;
+    public bool isKey;
+    public GameObject secondPosition;
     public Vector3 objectFinishPosition;
 
     public LayerMask personMask;
@@ -19,6 +20,10 @@ public class PersonObjective : MonoBehaviour
     private void Awake()
     {
         objectStartPosition = gameObject.transform.position;
+        if(isKey)
+        {
+            objectFinishPosition = secondPosition.transform.position;
+        }
     }
 
     private void Update()
@@ -45,16 +50,44 @@ public class PersonObjective : MonoBehaviour
         return this.pickedUp;
     }
 
-    public void setPickedUp(GameObject pickedUpBy)
-    { 
-        Debug.Log("Person");
-        pickedUp = true;
-        owner = pickedUpBy.GetComponent<PersonMover>();
-        Debug.Log(owner);
-        if(secondaryObjective)
+    public bool getIsKey()
+    {
+        return isKey;
+    }
+
+    public void setPickedUp(bool pickedUp, GameObject pickedUpBy = null)
+    {
+        this.pickedUp = pickedUp;
+        if (isKey)
         {
-            owner.setObjective(this, false);
+            owner = pickedUpBy.GetComponent<PersonMover>();
+            Debug.Log("Assigning new position");
+            owner.setObjective(this, false, true);
+            owner.setPickedUpObjective(gameObject);
+            this.gameObject.SetActive(false);
         }
-        
+    }
+
+    public void setEscaped(GameObject escapee, bool escaped)
+    {
+        owner = escapee.GetComponent<PersonMover>();
+        owner.setEscaped(escaped);
+    }
+
+    public void Drop(Vector3 where)
+    {
+        this.pickedUp = false;
+        this.gameObject.transform.position = where;
+        StartCoroutine(DropTimer());
+    }
+
+    IEnumerator DropTimer()
+    {
+        yield return new WaitForSeconds(despawnTime);
+
+        if(!pickedUp)
+        {
+            this.gameObject.transform.position = objectStartPosition;
+        }
     }
 }
