@@ -690,6 +690,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   possessCooldown: 3
+  npcLayer:
+    serializedVersion: 2
+    m_Bits: 512
 --- !u!1 &746483647
 GameObject:
   m_ObjectHideFlags: 0
@@ -1611,7 +1614,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6700845278110417163, guid: 569d9a44aa822ad4c814d26be43bf7b0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -9.94
       objectReference: {fileID: 0}
     - target: {fileID: 6700845278110417163, guid: 569d9a44aa822ad4c814d26be43bf7b0, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1619,7 +1622,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6700845278110417163, guid: 569d9a44aa822ad4c814d26be43bf7b0, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 10.86
       objectReference: {fileID: 0}
     - target: {fileID: 6700845278110417163, guid: 569d9a44aa822ad4c814d26be43bf7b0, type: 3}
       propertyPath: m_LocalRotation.w
