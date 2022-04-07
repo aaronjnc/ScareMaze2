@@ -46,7 +46,6 @@ public class PersonMover : MonoBehaviour
             beenTo.Add(objective);
             objectiveSet = false;
             objective = null;
-            pickedUpObjective = null;
         }
         else if(comparePosition(person.position, objectivePosition) && objective.getPickedUp() && pickedUpObjective == null)
         {
