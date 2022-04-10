@@ -7,27 +7,41 @@ public class LevelManager : MonoBehaviour
     public List<PersonObjective> personObjectives;
     public List<PersonMover> persons;
 
+    public bool isTutorial;
+
     public bool doorUnlocked;
     public PersonObjective key;
     public PersonObjective door;
+    public ExitGate exitGate;
+
+    private int totalPeople;
+    private int numberEscaped = 0;
+
     public PersonObjective finalObjective;
     // Start is called before the first frame update
     void Start()
     {
+        totalPeople = persons.Count;
         System.Random rnd = new System.Random();
         foreach(PersonMover person in persons)
         {
-            int randomIndex = rnd.Next(personObjectives.Count);
-            PersonObjective objective = personObjectives[randomIndex];
-            Debug.Log(randomIndex);
-            person.setObjective(objective, true, !objective.getIsKey());
+            if(!isTutorial)
+            {
+                int randomIndex = rnd.Next(personObjectives.Count);
+                PersonObjective objective = personObjectives[randomIndex];
+                person.setObjective(objective, true, !objective.getIsKey());
+            }
+            else
+            {
+                person.setObjective(key, true, !key.getIsKey());
+            }
         }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (persons.Count == 0)
+        if (numberEscaped == totalPeople)
         {
             Lose();
         }
@@ -45,6 +59,7 @@ public class LevelManager : MonoBehaviour
             foreach (PersonMover person in remove)
             {
                 persons.Remove(person);
+                numberEscaped++;
                 Destroy(person.gameObject);
             }
 
@@ -102,6 +117,7 @@ public class LevelManager : MonoBehaviour
     public void unlockDoor()
     {
         this.doorUnlocked = true;
+        exitGate.OpenGate();
     }
 
     private void Lose()

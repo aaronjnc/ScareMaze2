@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7270959874451772720}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: TailIK_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39,7 +39,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5398734447121015513}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: GhostTailA
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -70,7 +70,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2953255230963893167}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: TailIK
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -102,7 +102,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7196493351901019981}
   - component: {fileID: 3583659749249466427}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -191,7 +191,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2328073029089481109}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Armature
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -224,7 +224,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7181637568349413563}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: GhostEyes_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -254,7 +254,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8787897273586017672}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: GhostEyes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -288,7 +288,7 @@ GameObject:
   - component: {fileID: 6590057332181133031}
   - component: {fileID: 6590057332181133030}
   - component: {fileID: 6320239039988390838}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Ghost
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -342,6 +342,7 @@ MonoBehaviour:
   mainCamera: {fileID: 0}
   speed: 5
   rotateSpeed: 5
+  pauseMenu: {fileID: 0}
 --- !u!135 &6320239039988390838
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -364,7 +365,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7318797383881993641}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: TailTip_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -394,7 +395,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2128763047053873772}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: GhostTailB
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -425,7 +426,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3687409894121916869}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: TailTip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -456,7 +457,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7880367714331436849}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: GhostTailB_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -486,7 +487,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8201400080506886646}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: GhostCenter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
