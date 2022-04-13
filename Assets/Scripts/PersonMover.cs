@@ -26,12 +26,15 @@ public class PersonMover : MonoBehaviour
     //Escape
     public bool escaped;
 
+    //Animation
+    private Animator animator;
 
     //Scared
     public bool isScared;
 
     private void Awake()
     {
+        animator = gameObject.GetComponent<Animator>();
         person = gameObject.transform;
         agent = gameObject.GetComponent<NavMeshAgent>();
         rb = GetComponentInChildren<Rigidbody>();
@@ -39,6 +42,8 @@ public class PersonMover : MonoBehaviour
 
     private void Update()
     {
+        Debug.Log(animator.speed);
+        animator.SetFloat("movementSpeed", agent.speed);
         rb.position = gameObject.transform.position;
         if(comparePosition(person.position, objectivePosition) && finalLocation)
         {
@@ -46,7 +51,6 @@ public class PersonMover : MonoBehaviour
             beenTo.Add(objective);
             objectiveSet = false;
             objective = null;
-            pickedUpObjective = null;
         }
         else if(comparePosition(person.position, objectivePosition) && objective.getPickedUp() && pickedUpObjective == null)
         {

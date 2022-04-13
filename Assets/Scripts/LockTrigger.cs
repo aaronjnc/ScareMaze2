@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class LockTrigger : MonoBehaviour
 {
+    public LevelManager levelManager;
+
     public PersonObjective keyObjective;
     public PersonObjective lockObjective;
 
@@ -11,7 +13,8 @@ public class LockTrigger : MonoBehaviour
     {
         if(other.gameObject.tag == "Person" && other.gameObject.GetComponent<PersonMover>().getPickedUpObjective() == keyObjective.gameObject)
         {
-
+            Debug.Log("Unlock door");
+            levelManager.unlockDoor();
         }
     }
 }

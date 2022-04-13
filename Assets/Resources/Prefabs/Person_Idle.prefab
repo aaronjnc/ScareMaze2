@@ -136,6 +136,7 @@ GameObject:
   - component: {fileID: 253499704836316460}
   - component: {fileID: 253499704836316458}
   - component: {fileID: 253499704836316459}
+  - component: {fileID: 1943849252360546389}
   m_Layer: 9
   m_Name: Person_Idle
   m_TagString: Person
@@ -152,7 +153,7 @@ Transform:
   m_GameObject: {fileID: 1100555556195377328}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 41.52, y: 0, z: 122.58}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
   m_Children:
   - {fileID: 8700656018146732692}
   - {fileID: 4003364737164107581}
@@ -236,6 +237,25 @@ MonoBehaviour:
   beenTo: []
   escaped: 0
   isScared: 0
+--- !u!95 &1943849252360546389
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1100555556195377328}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: ce63f5a53587e6542810704d4ede900b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1367278098791610405
 GameObject:
   m_ObjectHideFlags: 0
@@ -760,6 +780,7 @@ MonoBehaviour:
   player:
     serializedVersion: 2
     m_Bits: 256
+  animator: {fileID: 1943849252360546389}
 --- !u!1 &4513669964165278803
 GameObject:
   m_ObjectHideFlags: 0
