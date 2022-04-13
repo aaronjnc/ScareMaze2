@@ -10,6 +10,7 @@ public class PersonSight : MonoBehaviour
 
     public Animator animator;
 
+
     private void OnTriggerEnter(Collider other)
     {
         RaycastHit hit;
