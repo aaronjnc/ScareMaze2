@@ -124,7 +124,7 @@ public class PersonMover : MonoBehaviour
         return (firstPosition.x == secondPosition.x) && (firstPosition.z == secondPosition.z);
     }
 
-    private void Scare()
+    public void Scare()
     {
         this.isScared = true;
         if(pickedUpObjective != null)
