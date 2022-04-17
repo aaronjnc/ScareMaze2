@@ -6,6 +6,10 @@ using UnityEngine.AI;
 public class PersonMover : MonoBehaviour
 {
     public NavMeshAgent agent;
+    private float agentDefaultSpeed;
+    public float agentStuckSpeed;
+
+    public PersonSight sight;
 
     public Transform person;
 
@@ -31,35 +35,49 @@ public class PersonMover : MonoBehaviour
 
     //Scared
     public bool isScared;
+    private bool stopped = false;
 
     private void Awake()
     {
         animator = gameObject.GetComponent<Animator>();
         person = gameObject.transform;
         agent = gameObject.GetComponent<NavMeshAgent>();
+        agentDefaultSpeed = agent.speed;
         rb = GetComponentInChildren<Rigidbody>();
     }
 
     private void Update()
     {
-        Debug.Log(animator.speed);
-        animator.SetFloat("movementSpeed", agent.speed);
-        rb.position = gameObject.transform.position;
-        if(comparePosition(person.position, objectivePosition) && finalLocation)
+        if(sight.getSighted() && !stopped)
         {
-            Debug.Log("Final Location");
-            beenTo.Add(objective);
-            objectiveSet = false;
-            objective = null;
+            stopped = true;
+            StartCoroutine(PauseMotion());
         }
-        else if(comparePosition(person.position, objectivePosition) && objective.getPickedUp() && pickedUpObjective == null)
+        else
         {
-            Debug.Log("Objective Picked up By Someone Else");
-            objectiveSet = false;
-        }
-        else if(objectiveSet)
-        {
-            GoToObjective();
+            animator.SetFloat("movementSpeed", agent.speed);
+            rb.position = gameObject.transform.position;
+            if (comparePosition(person.position, objectivePosition) && finalLocation)
+            {
+                Debug.Log("Final Location");
+                agent.speed = agentDefaultSpeed;
+                beenTo.Add(objective);
+                objectiveSet = false;
+                objective = null;
+            }
+            else if (comparePosition(person.position, objectivePosition) && objective.getPickedUp() && pickedUpObjective == null)
+            {
+                Debug.Log("Objective Picked up By Someone Else");
+                objectiveSet = false;
+            }
+            else if (objectiveSet)
+            {
+                GoToObjective();
+                if (agent.velocity == Vector3.zero)
+                {
+                    StartCoroutine(StopStuck());
+                }
+            }
         }
     }
 
@@ -132,5 +150,22 @@ public class PersonMover : MonoBehaviour
             pickedUpObjective.SetActive(true);
             pickedUpObjective.GetComponent<PersonObjective>().Drop(this.gameObject.transform.position);
         }
+    }
+
+    IEnumerator StopStuck()
+    {
+        Debug.Log("Stop being stuck");
+        agent.speed = 1.5f;
+        yield return new WaitForSeconds(1f);
+        agent.speed = agentDefaultSpeed;
+    }
+
+    IEnumerator PauseMotion()
+    {
+        Debug.Log("Saw ghost");
+        agent.speed = 0;
+        yield return new WaitForSeconds(1f);
+        agent.speed = agentDefaultSpeed;
+        stopped = false;
     }
 }
