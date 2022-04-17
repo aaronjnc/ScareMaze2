@@ -19,11 +19,14 @@ public class LevelManager : MonoBehaviour
 
     public PersonObjective finalObjective;
 
+    public NotifyDoorIsOpen notify;
+
     System.Random rnd = new System.Random();
 
     // Start is called before the first frame update
     void Start()
     {
+        notify.setObjectives(finalObjective, door, key);
         totalPeople = persons.Count;
         foreach(PersonMover person in persons)
         {
@@ -97,9 +100,20 @@ public class LevelManager : MonoBehaviour
                         } while (person.getBeenTo().Contains(objective) | (person.getPickedUpObjective() == key.gameObject && objective == key));
                         person.setObjective(objective, true, !objective.getIsKey());
                     }
+                    else if(person.getBeenTo().Count == personObjectives.Count - 1)
+                    {
+                        Debug.Log("Backtrack");
+                        PersonObjective backtrack;
+                        do
+                        {
+                            backtrack = personObjectives[rnd.Next(personObjectives.Count)];
+                        } while (backtrack == door);
+                        person.getBeenTo().Remove(backtrack);
+                    }
                 }
                 else
                 {
+                    Debug.Log("Destroy");
                     persons.Remove(person);
                     Destroy(person.gameObject);
                 }
@@ -117,6 +131,7 @@ public class LevelManager : MonoBehaviour
     {
         this.doorUnlocked = true;
         exitGate.OpenGate();
+        notify.setDoorIsOpen();
     }
 
     private void Lose()

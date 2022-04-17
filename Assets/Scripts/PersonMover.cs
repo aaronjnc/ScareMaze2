@@ -8,6 +8,7 @@ public class PersonMover : MonoBehaviour
     public NavMeshAgent agent;
     private float agentDefaultSpeed;
     public float agentStuckSpeed;
+    private float objectiveRange = 0.5f;
 
     public PersonSight sight;
 
@@ -139,7 +140,9 @@ public class PersonMover : MonoBehaviour
 
     private bool comparePosition(Vector3 firstPosition, Vector3 secondPosition)
     {
-        return (firstPosition.x == secondPosition.x) && (firstPosition.z == secondPosition.z);
+        bool betweenMaxAndMinX = firstPosition.x <= secondPosition.x + objectiveRange && firstPosition.x >= secondPosition.x - objectiveRange;
+        bool betweenMaxAndMinZ = firstPosition.z <= secondPosition.z + objectiveRange && firstPosition.z >= secondPosition.z - objectiveRange;
+        return (betweenMaxAndMinX && betweenMaxAndMinZ);
     }
 
     public void Scare()
@@ -156,7 +159,7 @@ public class PersonMover : MonoBehaviour
     {
         Debug.Log("Stop being stuck");
         agent.speed = 1.5f;
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
         agent.speed = agentDefaultSpeed;
     }
 
