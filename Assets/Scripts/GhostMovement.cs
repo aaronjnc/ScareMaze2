@@ -2,18 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using static UnityEngine.InputSystem.InputAction;
 
 [RequireComponent(typeof(Rigidbody))]
 public class GhostMovement : MonoBehaviour
 {
-    private static GhostMovement _instance;
-    public static GhostMovement Instance
-    {
-        get
-        {
-            return _instance;
-        }
-    }
     [Tooltip("Controls")]
     private PlayerControls controls;
 
@@ -31,17 +24,43 @@ public class GhostMovement : MonoBehaviour
 
     [Tooltip("Ghost rotation speed")]
     [SerializeField] private float rotateSpeed;
+    [SerializeField] private GameObject pauseMenu;
+    private Animator animator;
     // Start is called before the first frame update
     void Start()
     {
-        _instance = this;
         controls = new PlayerControls();
         player = GetComponent<Rigidbody>();
-        controls.Movement.Movement.performed += ctx => dir = ctx.ReadValue<Vector2>();
-        controls.Movement.Movement.canceled += ctx => dir = Vector2.zero;
+        animator = GetComponent<Animator>();
+        controls.Movement.Movement.performed += Move;
+        controls.Movement.Movement.canceled += StopMoving; 
         controls.Movement.Movement.Enable();
+        controls.Movement.Pause.performed += PauseGame;
+        controls.Movement.Pause.Enable();
     }
-
+    void Move(CallbackContext ctx)
+    {
+        dir = ctx.ReadValue<Vector2>();
+        animator.SetBool("isMoving", true);
+    }
+    void StopMoving(CallbackContext ctx)
+    {
+        dir = Vector2.zero;
+        animator.SetBool("isMoving", false);
+    }
+    void PauseGame(CallbackContext ctx)
+    {
+        if (pauseMenu.activeInHierarchy)
+        {
+            pauseMenu.SetActive(false);
+            Time.timeScale = 1;
+        }
+        else
+        {
+            pauseMenu.SetActive(true);
+            Time.timeScale = 0;
+        }
+    }
     // Update is called once per frame
     void FixedUpdate()
     {
