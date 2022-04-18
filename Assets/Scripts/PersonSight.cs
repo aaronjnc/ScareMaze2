@@ -34,4 +34,9 @@ public class PersonSight : MonoBehaviour
         animator.SetBool("ghostSpotted", false);
         sighted = false;
     }
+
+    public bool getSighted()
+    {
+        return this.sighted;
+    }
 }

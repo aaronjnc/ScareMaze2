@@ -18,17 +18,21 @@ public class LevelManager : MonoBehaviour
     private int numberEscaped = 0;
 
     public PersonObjective finalObjective;
+
+    public NotifyDoorIsOpen notify;
+
+    System.Random rnd = new System.Random();
+
     // Start is called before the first frame update
     void Start()
     {
+        notify.setObjectives(finalObjective, door, key);
         totalPeople = persons.Count;
-        System.Random rnd = new System.Random();
         foreach(PersonMover person in persons)
         {
             if(!isTutorial)
             {
-                int randomIndex = rnd.Next(personObjectives.Count);
-                PersonObjective objective = personObjectives[randomIndex];
+                PersonObjective objective = getRandomObjective();
                 person.setObjective(objective, true, !objective.getIsKey());
             }
             else
@@ -79,34 +83,37 @@ public class LevelManager : MonoBehaviour
                     else if(person.getObjective() == key && key.getPickedUp() && person.getPickedUpObjective() == null)
                     {
                         Debug.Log("Can't get key");
-                        System.Random rnd = new System.Random();
                         PersonObjective objective;
                         do
                         {
-                            int randomIndex = rnd.Next(personObjectives.Count);
-                            objective = personObjectives[randomIndex];
+                            objective = getRandomObjective();
                         } while (person.getBeenTo().Contains(objective));
                         person.setObjective(objective, true, !objective.getIsKey());
                     }
                     else if (person.getBeenTo().Count != personObjectives.Count - 1 && !person.getObjectiveSet())
                     {
                         Debug.Log("Reassigning Task");
-                        System.Random rnd = new System.Random();
                         PersonObjective objective;
                         do
                         {
-                            int randomIndex = rnd.Next(personObjectives.Count);
-                            objective = personObjectives[randomIndex];
+                            objective = getRandomObjective();
                         } while (person.getBeenTo().Contains(objective) | (person.getPickedUpObjective() == key.gameObject && objective == key));
                         person.setObjective(objective, true, !objective.getIsKey());
                     }
-                    else
+                    else if(person.getBeenTo().Count == personObjectives.Count - 1)
                     {
-
+                        Debug.Log("Backtrack");
+                        PersonObjective backtrack;
+                        do
+                        {
+                            backtrack = personObjectives[rnd.Next(personObjectives.Count)];
+                        } while (backtrack == door);
+                        person.getBeenTo().Remove(backtrack);
                     }
                 }
                 else
                 {
+                    Debug.Log("Destroy");
                     persons.Remove(person);
                     Destroy(person.gameObject);
                 }
@@ -114,10 +121,17 @@ public class LevelManager : MonoBehaviour
         }
     }
 
+    private PersonObjective getRandomObjective()
+    {
+        int randomIndex = rnd.Next(personObjectives.Count);
+        return personObjectives[randomIndex];
+    }
+
     public void unlockDoor()
     {
         this.doorUnlocked = true;
         exitGate.OpenGate();
+        notify.setDoorIsOpen();
     }
 
     private void Lose()
