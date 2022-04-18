@@ -227,6 +227,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   agent: {fileID: 0}
+  agentStuckSpeed: 0
+  sight: {fileID: 3883467902147554621}
   person: {fileID: 0}
   rb: {fileID: 0}
   objectivePosition: {x: 0, y: 0, z: 0}
