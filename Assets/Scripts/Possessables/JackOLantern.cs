@@ -7,8 +7,6 @@ public class JackOLantern : Possessable
 {
     [SerializeField]
     private LayerMask npcLayer;
-    [SerializeField]
-    private Transform spawnPos;
     void Start()
     {
         base.Start();
@@ -25,9 +23,7 @@ public class JackOLantern : Possessable
         {
             GameObject ghost = GhostInfo.Instance.gameObject;
             ghost.transform.forward = transform.forward;
-            //Vector3 newPos = transform.position + transform.forward * 2;
             ghost.transform.position = new Vector3(spawnPos.position.x, ghost.transform.position.y, spawnPos.position.z);
-            //ghost.transform.position = new Vector3(newPos.x, ghost.transform.position.y, newPos.z);
             ghost.SetActive(true);
             possessed = false;
             StartCoroutine(Scare(.05f));
