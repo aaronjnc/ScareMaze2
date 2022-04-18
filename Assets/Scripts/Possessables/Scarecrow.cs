@@ -17,12 +17,14 @@ public class Scarecrow : Possessable
     {
         possessed = true;
         movement.enabled = true;
+        scarable = false;
         animator.SetBool("isPossessed", true);
+        StartCoroutine("ScareCooldown");
     }
 
     protected override void Scare(CallbackContext ctx)
     {
-        if (possessed)
+        if (scarable && possessed)
         {
             movement.enabled = false;
             GameObject ghost = GhostInfo.Instance.gameObject;

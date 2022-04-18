@@ -5,6 +5,9 @@ using static UnityEngine.InputSystem.InputAction;
 
 public abstract class Possessable : MonoBehaviour
 {
+    [SerializeField]
+    protected Transform spawnPos;
+    protected bool scarable = false;
     protected bool possessed = false;
     protected PlayerControls controls;
     [SerializeField] protected float possessCooldown;
@@ -28,5 +31,11 @@ public abstract class Possessable : MonoBehaviour
     {
         yield return new WaitForSeconds(possessCooldown);
         ghost.GetComponent<GhostPossession>().enabled = true;
+    }
+
+    protected IEnumerator ScareCooldown()
+    {
+        yield return new WaitForSeconds(possessCooldown);
+        scarable = true;
     }
 }
