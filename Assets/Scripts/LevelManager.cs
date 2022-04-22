@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
@@ -23,10 +24,17 @@ public class LevelManager : MonoBehaviour
 
     System.Random rnd = new System.Random();
 
+    private int personCount;
+
+    [SerializeField]
+    private GameObject endGame;
+    [SerializeField]
+    private LevelEnd levelEnd;
+
     // Start is called before the first frame update
     void Start()
     {
-        notify.setObjectives(finalObjective, door, key);
+        notify?.setObjectives(finalObjective, door, key);
         totalPeople = persons.Count;
         foreach(PersonMover person in persons)
         {
@@ -40,12 +48,13 @@ public class LevelManager : MonoBehaviour
                 person.setObjective(key, true, !key.getIsKey());
             }
         }
+        personCount = persons.Count;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (numberEscaped == totalPeople)
+        if (numberEscaped >= 1 && totalPeople != 0)
         {
             Lose();
         }
@@ -134,8 +143,25 @@ public class LevelManager : MonoBehaviour
         notify.setDoorIsOpen();
     }
 
-    private void Lose()
+    public void Lose()
     {
-        Debug.Log("Lose");
+        Time.timeScale = 0;
+        endGame.SetActive(true);
+        levelEnd.SetText(false);
+    }
+    private void Win()
+    {
+        endGame.SetActive(true);
+        levelEnd.SetText(true);
+        Time.timeScale = 0;
+    }
+
+    public void KillPerson()
+    {
+        personCount--;
+        if (personCount == 0)
+        {
+            Win();
+        }
     }
 }

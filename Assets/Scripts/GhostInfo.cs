@@ -22,6 +22,7 @@ public class GhostInfo : MonoBehaviour
     private float healthDropRate;
     [SerializeField]
     private Slider healthSlider;
+    private bool invincible = false;
     private void Start()
     {
         _instance = this;
@@ -35,14 +36,25 @@ public class GhostInfo : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        if (sighted)
+        if (sighted && !invincible)
         {
             health -= healthDropRate*Time.deltaTime;
             healthSlider.value = health;
             if (health < 0)
             {
-                Debug.Log("Die");
+                GameObject.Find("LevelManager").GetComponent<LevelManager>().Lose();
             }
         }
+    }
+    private void OnEnable()
+    {
+        StartCoroutine("Invincible");
+    }
+
+    IEnumerator Invincible()
+    {
+        invincible = true;
+        yield return new WaitForSeconds(1f);
+        invincible = false;
     }
 }
