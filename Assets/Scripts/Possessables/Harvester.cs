@@ -12,10 +12,16 @@ public class Harvester : Possessable
     private Rigidbody rb;
     [SerializeField]
     private float velocity;
+    [SerializeField]
+    private float respawnTime;
+    private Vector3 startPos;
+    private Vector3 startRot;
     private void Start()
     {
         base.Start();
         rb = GetComponent<Rigidbody>();
+        startPos = transform.position;
+        startRot = transform.eulerAngles;
         controls.Movement.Movement.performed += Move;
         controls.Movement.Movement.canceled += Cancel;
     }
@@ -50,10 +56,11 @@ public class Harvester : Possessable
 
     protected override void Scare(InputAction.CallbackContext ctx)
     {
-        if (scarable)
+        if (scarable && possessed)
         {
             possessed = false;
             moving = false;
+            scarable = false;
             rb.velocity = Vector3.zero;
             controls.Movement.Movement.Disable();
             Camera.main.transform.position = new Vector3(transform.position.x, 15, transform.position.z);
@@ -62,6 +69,7 @@ public class Harvester : Possessable
             ghost.transform.position = new Vector3(spawnPos.position.x, ghost.transform.position.y, spawnPos.position.z);
             ghost.SetActive(true);
             StartCoroutine(PossessCooldown(ghost));
+            StartCoroutine("Respawn");
         }
     }
 
@@ -78,7 +86,13 @@ public class Harvester : Possessable
     {
         if (collision.gameObject.CompareTag("Person"))
         {
-            Destroy(collision.gameObject);
+            collision.gameObject.GetComponent<PersonMover>().Scare();
         }
+    }
+    IEnumerator Respawn()
+    {
+        yield return new WaitForSeconds(respawnTime);
+        transform.position = startPos;
+        transform.eulerAngles = startRot;
     }
 }

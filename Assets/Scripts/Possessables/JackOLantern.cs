@@ -15,17 +15,20 @@ public class JackOLantern : Possessable
     public override void Possess()
     {
         possessed = true;
+        scarable = false;
+        StartCoroutine("ScareCooldown");
     }
 
     protected override void Scare(InputAction.CallbackContext ctx)
     {
-        if (possessed)
+        if (possessed && scarable)
         {
             GameObject ghost = GhostInfo.Instance.gameObject;
             ghost.transform.forward = transform.forward;
             ghost.transform.position = new Vector3(spawnPos.position.x, ghost.transform.position.y, spawnPos.position.z);
             ghost.SetActive(true);
             possessed = false;
+            scarable = false;
             StartCoroutine(Scare(.05f));
             StartCoroutine(PossessCooldown(ghost));
         }
@@ -43,7 +46,7 @@ public class JackOLantern : Possessable
             PersonSight sight = colliders[i].gameObject.GetComponentInChildren<PersonSight>();
             if (sight.sighted)
             {
-                PersonMover person = sight.gameObject.GetComponentInChildren<PersonMover>();
+                PersonMover person = sight.gameObject.GetComponentInParent<PersonMover>();
                 person.Scare();
             }
         }

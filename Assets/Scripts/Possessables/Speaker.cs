@@ -25,17 +25,26 @@ public class Speaker : Possessable
             ghost.transform.forward = transform.forward;
             ghost.transform.position = new Vector3(spawnPos.position.x, ghost.transform.position.y, spawnPos.position.z);
             ghost.SetActive(true);
-            Collider[] colliders = Physics.OverlapSphere(transform.position, 10, npcLayer);
-            for (int i = 0; i < colliders.Length; i++)
-            {
-                PersonSight sight = colliders[i].gameObject.GetComponentInChildren<PersonSight>();
-                if (!sight.sighted)
-                {
-                    PersonMover person = sight.gameObject.GetComponentInParent<PersonMover>();
-                    person.Scare();
-                }
-            }
+            StartCoroutine(Scare(.05f));
             StartCoroutine(PossessCooldown(ghost));
         }
+    }
+    IEnumerator Scare(float time)
+    {
+        yield return new WaitForSeconds(time);
+        Collider[] colliders = Physics.OverlapSphere(transform.position, 5, npcLayer);
+        for (int i = 0; i < colliders.Length; i++)
+        {
+            PersonSight sight = colliders[i].gameObject.GetComponentInChildren<PersonSight>();
+            if (!sight.sighted)
+            {
+                PersonMover person = sight.gameObject.GetComponentInParent<PersonMover>();
+                person.Scare();
+            }
+        }
+    }
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(transform.position, 5);
     }
 }

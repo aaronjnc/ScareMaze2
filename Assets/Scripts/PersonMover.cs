@@ -38,6 +38,12 @@ public class PersonMover : MonoBehaviour
     public bool isScared;
     private bool stopped = false;
 
+    [SerializeField]
+    private LevelManager levelManager;
+    [SerializeField]
+    private AudioClip[] scareClips;
+    private AudioSource audioSource;
+
     private void Awake()
     {
         animator = gameObject.GetComponent<Animator>();
@@ -45,6 +51,9 @@ public class PersonMover : MonoBehaviour
         agent = gameObject.GetComponent<NavMeshAgent>();
         agentDefaultSpeed = agent.speed;
         rb = GetComponentInChildren<Rigidbody>();
+        audioSource = GetComponent<AudioSource>();
+        int num = Random.Range(0, scareClips.Length);
+        audioSource.clip = scareClips[num];
     }
 
     private void Update()
@@ -153,6 +162,8 @@ public class PersonMover : MonoBehaviour
             pickedUpObjective.SetActive(true);
             pickedUpObjective.GetComponent<PersonObjective>().Drop(this.gameObject.transform.position);
         }
+        agent.speed = 0;
+        StartCoroutine("DeathWait");
     }
 
     IEnumerator StopStuck()
@@ -170,5 +181,13 @@ public class PersonMover : MonoBehaviour
         yield return new WaitForSeconds(1f);
         agent.speed = agentDefaultSpeed;
         stopped = false;
+    }
+
+    IEnumerator DeathWait()
+    {
+        audioSource.Play();
+        yield return new WaitForSeconds(.25f);
+        levelManager.KillPerson();
+        Destroy(this.gameObject);
     }
 }

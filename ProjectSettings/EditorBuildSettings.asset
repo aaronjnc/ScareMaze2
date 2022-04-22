@@ -9,6 +9,30 @@ EditorBuildSettings:
     path: Assets/Scenes/Menu.unity
     guid: 6aad1390926701540ba22646cde583f9
   - enabled: 1
-    path: Assets/Scenes/AaronScene.unity
-    guid: 9b7b31e5d60fd3a48a6533c8f3980a63
+    path: Assets/Scenes/Tutorial 1.unity
+    guid: c6e2ef2ce7a1bda40a5ee9d01ee85785
+  - enabled: 1
+    path: Assets/Scenes/Tutorial 2.unity
+    guid: 33230d6003fcd8845b2ace21b9226257
+  - enabled: 1
+    path: Assets/Scenes/Tutorial 3.unity
+    guid: 4d7a5b88bc9ea3145a0d704d628e6116
+  - enabled: 1
+    path: Assets/Scenes/Tutorial 4.unity
+    guid: 60261e6b69e4635488f735b1de480896
+  - enabled: 1
+    path: Assets/Scenes/Level 1.unity
+    guid: 7195a3fa0cc17424ea6588627756a58f
+  - enabled: 1
+    path: Assets/Scenes/Level 2.unity
+    guid: 91ef62ff6e92f314184cf7709d39df4d
+  - enabled: 1
+    path: Assets/Scenes/Level 3.unity
+    guid: aea64b45203957645a736c9d88b04927
+  - enabled: 1
+    path: Assets/Scenes/Level 4.unity
+    guid: fdcaed629870e4f4e9ec47bebcad1c6c
+  - enabled: 1
+    path: Assets/Scenes/Level 5.unity
+    guid: 08b37ebf4d4898d49bf97871fafc7635
   m_configObjects: {}
