@@ -30,7 +30,7 @@ public class Scarecrow : Possessable
         scarable = false;
         rb.freezeRotation = true;
         rb.constraints = RigidbodyConstraints.None;
-        rb.constraints = RigidbodyConstraints.FreezePositionY;
+        rb.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezeRotationX;
         animator.SetBool("isPossessed", true);
         StartCoroutine("ScareCooldown");
     }
@@ -39,6 +39,7 @@ public class Scarecrow : Possessable
     {
         if (scarable && possessed)
         {
+            rb.constraints = RigidbodyConstraints.FreezeAll;
             movement.enabled = false;
             GameObject ghost = GhostInfo.Instance.gameObject;
             ghost.transform.forward = transform.forward;
@@ -49,7 +50,6 @@ public class Scarecrow : Possessable
             scarable = false;
             animator.SetBool("isPossessed", false);
             this.enabled = false;
-            rb.constraints = RigidbodyConstraints.FreezeAll;
             StartCoroutine(Scare(.05f));
             StartCoroutine(PossessCooldown(ghost));
             StartCoroutine("Respawn");

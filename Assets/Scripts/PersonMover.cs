@@ -163,6 +163,8 @@ public class PersonMover : MonoBehaviour
             pickedUpObjective.GetComponent<PersonObjective>().Drop(this.gameObject.transform.position);
         }
         agent.speed = 0;
+        if (GhostInfo.Instance.sighted)
+            GhostInfo.Instance.sighted = false;
         StartCoroutine("DeathWait");
     }
 
