@@ -22,9 +22,137 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     {
         asset = InputActionAsset.FromJson(@"{
     ""name"": ""PlayerControls"",
-    ""maps"": [],
+    ""maps"": [
+        {
+            ""name"": ""Movement"",
+            ""id"": ""372bb4b8-ed07-43f3-bd36-926aaaf1a9e0"",
+            ""actions"": [
+                {
+                    ""name"": ""Movement"",
+                    ""type"": ""Value"",
+                    ""id"": ""9440ae44-c1ac-4141-b811-82dc57dd1b4c"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""aab23f4d-8f52-4132-8f79-28a55deccd56"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": ""2D Vector"",
+                    ""id"": ""23d32b8a-80cc-4292-92d6-48acbbdc527d"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""a4e04e2f-b8fc-4990-8d66-89859c403707"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""b79f88ad-aef3-46ed-bd4a-db28be485294"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""b08990d3-35dd-454f-b877-4cbc8fa28246"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""719b00ae-2547-44f0-996e-7de274b7400f"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dbdacd63-f37d-40b2-9114-c74929e7890a"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Possession"",
+            ""id"": ""9d3eae86-a385-47bc-970e-8a343b9db6c6"",
+            ""actions"": [
+                {
+                    ""name"": ""Possess"",
+                    ""type"": ""Button"",
+                    ""id"": ""24ebb2ec-4637-4ad1-bb77-00e08bf123e5"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""200e49cc-8c75-4af2-90b3-f804e22f1bc1"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Possess"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        }
+    ],
     ""controlSchemes"": []
 }");
+        // Movement
+        m_Movement = asset.FindActionMap("Movement", throwIfNotFound: true);
+        m_Movement_Movement = m_Movement.FindAction("Movement", throwIfNotFound: true);
+        m_Movement_Pause = m_Movement.FindAction("Pause", throwIfNotFound: true);
+        // Possession
+        m_Possession = asset.FindActionMap("Possession", throwIfNotFound: true);
+        m_Possession_Possess = m_Possession.FindAction("Possess", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -79,5 +207,88 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     public int FindBinding(InputBinding bindingMask, out InputAction action)
     {
         return asset.FindBinding(bindingMask, out action);
+    }
+
+    // Movement
+    private readonly InputActionMap m_Movement;
+    private IMovementActions m_MovementActionsCallbackInterface;
+    private readonly InputAction m_Movement_Movement;
+    private readonly InputAction m_Movement_Pause;
+    public struct MovementActions
+    {
+        private @PlayerControls m_Wrapper;
+        public MovementActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Movement => m_Wrapper.m_Movement_Movement;
+        public InputAction @Pause => m_Wrapper.m_Movement_Pause;
+        public InputActionMap Get() { return m_Wrapper.m_Movement; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(MovementActions set) { return set.Get(); }
+        public void SetCallbacks(IMovementActions instance)
+        {
+            if (m_Wrapper.m_MovementActionsCallbackInterface != null)
+            {
+                @Movement.started -= m_Wrapper.m_MovementActionsCallbackInterface.OnMovement;
+                @Movement.performed -= m_Wrapper.m_MovementActionsCallbackInterface.OnMovement;
+                @Movement.canceled -= m_Wrapper.m_MovementActionsCallbackInterface.OnMovement;
+                @Pause.started -= m_Wrapper.m_MovementActionsCallbackInterface.OnPause;
+                @Pause.performed -= m_Wrapper.m_MovementActionsCallbackInterface.OnPause;
+                @Pause.canceled -= m_Wrapper.m_MovementActionsCallbackInterface.OnPause;
+            }
+            m_Wrapper.m_MovementActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @Movement.started += instance.OnMovement;
+                @Movement.performed += instance.OnMovement;
+                @Movement.canceled += instance.OnMovement;
+                @Pause.started += instance.OnPause;
+                @Pause.performed += instance.OnPause;
+                @Pause.canceled += instance.OnPause;
+            }
+        }
+    }
+    public MovementActions @Movement => new MovementActions(this);
+
+    // Possession
+    private readonly InputActionMap m_Possession;
+    private IPossessionActions m_PossessionActionsCallbackInterface;
+    private readonly InputAction m_Possession_Possess;
+    public struct PossessionActions
+    {
+        private @PlayerControls m_Wrapper;
+        public PossessionActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Possess => m_Wrapper.m_Possession_Possess;
+        public InputActionMap Get() { return m_Wrapper.m_Possession; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(PossessionActions set) { return set.Get(); }
+        public void SetCallbacks(IPossessionActions instance)
+        {
+            if (m_Wrapper.m_PossessionActionsCallbackInterface != null)
+            {
+                @Possess.started -= m_Wrapper.m_PossessionActionsCallbackInterface.OnPossess;
+                @Possess.performed -= m_Wrapper.m_PossessionActionsCallbackInterface.OnPossess;
+                @Possess.canceled -= m_Wrapper.m_PossessionActionsCallbackInterface.OnPossess;
+            }
+            m_Wrapper.m_PossessionActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @Possess.started += instance.OnPossess;
+                @Possess.performed += instance.OnPossess;
+                @Possess.canceled += instance.OnPossess;
+            }
+        }
+    }
+    public PossessionActions @Possession => new PossessionActions(this);
+    public interface IMovementActions
+    {
+        void OnMovement(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
+    }
+    public interface IPossessionActions
+    {
+        void OnPossess(InputAction.CallbackContext context);
     }
 }
