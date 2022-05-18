@@ -16,7 +16,7 @@ public class Speaker : Possessable
 
     protected override void Scare(InputAction.CallbackContext ctx)
     {
-        if (scarable)
+        if (scarable && possessed)
         {
             possessed = false;
             controls.Movement.Movement.Disable();
@@ -25,6 +25,7 @@ public class Speaker : Possessable
             ghost.transform.forward = transform.forward;
             ghost.transform.position = new Vector3(spawnPos.position.x, ghost.transform.position.y, spawnPos.position.z);
             ghost.SetActive(true);
+            scarable = false;
             StartCoroutine(Scare(.05f));
             StartCoroutine(PossessCooldown(ghost));
         }
