@@ -24,7 +24,8 @@ public class PersonSight : MonoBehaviour
     private void OnTriggerStay(Collider other)
     {
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, other.transform.position - transform.position, out hit, 100, player))
+        if (Physics.Raycast(transform.position, other.transform.position - transform.position, out hit, 100, player) &&
+            !GetComponentInParent<PersonMover>().isScared)
         {
             animator.SetBool("ghostSpotted", true);
             sighted = true;
